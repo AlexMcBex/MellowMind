@@ -5,13 +5,21 @@ const SoundButton = ({ soundSrc, label, isPaused}) => {
   const audioRef = useRef(null);
 
   const handleButtonClick = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    if (audioRef.current) {
+        if (isPlaying) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+        } else {
+            audioRef.current.src = soundSrc; // Explicitly set the audio source
+            audioRef.current.play().then(() => {
+                setIsPlaying(true);
+            }).catch(error => {
+                console.error("Failed to play the audio:", error);
+            });
+        }
     }
-    setIsPlaying(!isPlaying);
-  };
+};
+
 
   const handleVolumeChange = (event) => {
     audioRef.current.volume = event.target.value;

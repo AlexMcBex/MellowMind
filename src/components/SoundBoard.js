@@ -1,22 +1,27 @@
 import React from 'react';
 import SoundButton from './SoundButton';
+import Timer from './Timer';
 
 const soundData = [
   { id: 1, soundSrc: 'jazz.mp3', label: 'Jazz' },
   { id: 2, soundSrc: 'rain.mp3', label: 'Rain' },
   { id: 3, soundSrc: 'chatter.mp3', label: 'Chatter' },
   { id: 4, soundSrc: 'fireplace.mp3', label: 'Fireplace' },
-
-  
 ];
+
 
 
 const Soundboard = () => {
   const handleMasterPause = () => {
     const audioElements = document.getElementsByTagName('audio');
     for (let i = 0; i < audioElements.length; i++) {
-      if (!audioElements[i].paused) {
-        audioElements[i].pause();
+      const audio = audioElements[i];
+      if (!audio.paused) {
+        audio.pause();
+      } else {
+        audio.play().catch((error) => {
+          console.error("Play audio error: ", error);
+        });
       }
     }
   };
@@ -27,7 +32,7 @@ const Soundboard = () => {
         <h1>MellowMind</h1>
         <h2>Lo-Fi Music Soundboard</h2>
       </center>
-    
+      <Timer />
       <div className="soundboard-container">
         <div className="soundboard">
           <div className="sound-buttons">
